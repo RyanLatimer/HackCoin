@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # HackCoin Node (Mainnet)
+  hackcoin-mainnet:
+    build: .
+    container_name: hackcoin-mainnet
+    ports:
+      - "3001:3001"   # HTTP API
+      - "6001:6001"   # P2P Network
+    environment:
+      - NETWORK_TYPE=MAINNET
+      - HTTP_PORT=3001
+      - P2P_PORT=6001
+      - NODE_NAME=HackCoin-Docker-Mainnet
+      - ALLOWED_ORIGINS=*
+    volumes:
+      - hackcoin_mainnet_data:/app/node/wallet
+    restart: unless-stopped
+    networks:
+      - hackcoin-network
+
+  # HackCoin Node (Testnet)
+  hackcoin-testnet:
+    build: .
+    container_name: hackcoin-testnet
+    ports:
+      - "3002:3001"   # HTTP API
+      - "6002:6001"   # P2P Network
+    environment:
+      - NETWORK_TYPE=TESTNET
+      - HTTP_PORT=3001
+      - P2P_PORT=6001
+      - NODE_NAME=HackCoin-Docker-Testnet
+      - ALLOWED_ORIGINS=*
+    volumes:
+      - hackcoin_testnet_data:/app/node/wallet
+    restart: unless-stopped
+    networks:
+      - hackcoin-network
+
+  # Nginx Reverse Proxy (for SSL termination)
+  nginx:
+    image: nginx:alpine
+    container_name: hackcoin-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - hackcoin-mainnet
+      - hackcoin-testnet
+    restart: unless-stopped
+    networks:
+      - hackcoin-network
+
+  # Optional: Node monitoring
+  prometheus:
+    image: prom/prometheus
+    container_name: hackcoin-monitoring
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+    networks:
+      - hackcoin-network
+
+volumes:
+  hackcoin_mainnet_data:
+  hackcoin_testnet_data:
+
+networks:
+  hackcoin-network:
+    driver: bridge

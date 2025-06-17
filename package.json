@@ -8,7 +8,15 @@
     "compile": "tsc",
     "dev": "ts-node api-server.ts",
     "frontend": "cd frontend && npm start",
-    "build": "npm run compile && cd frontend && npm run build"
+    "build": "npm run compile && cd frontend && npm run build",
+    "global-node": "ts-node global-node.ts",
+    "global-node:prod": "npm run compile && node global-node.js",
+    "deploy:local": "NETWORK_TYPE=LOCAL npm run global-node",
+    "deploy:testnet": "NETWORK_TYPE=TESTNET npm run global-node",
+    "deploy:mainnet": "NETWORK_TYPE=MAINNET npm run global-node",
+    "docker:build": "docker build -t hackcoin .",
+    "docker:run": "docker run -p 3001:3001 -p 6001:6001 hackcoin",
+    "docker:compose": "docker-compose up -d"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
@@ -18,8 +26,9 @@
     "cross-env": "^5.0.1",
     "crypto-js": "^3.1.6",
     "elliptic": "^6.4.0",
-    "express": "^5.1.0",
+    "express": "^4.18.2",
     "lodash": "^4.17.4",
+    "node-fetch": "^2.6.7",
     "ts-node": "^3.2.0",
     "typescript": "^4.9.5",
     "ws": "^3.0.0"

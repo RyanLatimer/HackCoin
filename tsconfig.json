@@ -7,15 +7,18 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
-  },
-  "include": [
+  },  "include": [
     "src/main.ts",
     "src/blockchain.ts",
     "src/p2p.ts",
     "src/util.ts",
     "src/transaction.ts",
     "src/wallet.ts",
-    "src/transactionPool.ts"
+    "src/transactionPool.ts",
+    "src/network-manager.ts",
+    "src/network-config.ts",
+    "api-server.ts",
+    "global-node.ts"
   ],
   "exclude": [
     "node_modules"

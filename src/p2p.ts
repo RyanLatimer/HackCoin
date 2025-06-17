@@ -173,13 +173,18 @@ const broadcastLatest = (): void => {
     broadcast(responseLatestMsg());
 };
 
-const connectToPeers = (newPeer: string): void => {
-    const ws: WebSocket = new WebSocket(newPeer);
-    ws.on('open', () => {
-        initConnection(ws);
-    });
-    ws.on('error', () => {
-        console.log('connection failed');
+const connectToPeers = (newPeers: string | string[]): void => {
+    const peers = Array.isArray(newPeers) ? newPeers : [newPeers];
+    
+    peers.forEach((peer) => {
+        const ws: WebSocket = new WebSocket(peer);
+        ws.on('open', () => {
+            console.log('Connected to peer: ' + peer);
+            initConnection(ws);
+        });
+        ws.on('error', (error) => {
+            console.log('Connection failed to peer: ' + peer, error);
+        });
     });
 };
 
