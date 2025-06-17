@@ -43,8 +43,9 @@ app.use((0, cors_1.default)({
     credentials: false
 }));
 app.use(bodyParser.json());
-// Initialize wallet and P2P
+// Initialize wallet and blockchain
 (0, wallet_1.initWallet)();
+(0, blockchain_1.initBlockchain)();
 // Start P2P server for global connectivity
 (0, p2p_1.initP2PServer)(P2P_PORT);
 // Connect to seed nodes if specified

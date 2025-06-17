@@ -1,0 +1,52 @@
+{
+  "name": "hackcoin-desktop",
+  "version": "1.0.0",
+  "description": "HackCoin Desktop Application",
+  "main": "electron-main.js",
+  "scripts": {
+    "electron": "electron .",
+    "electron-dev": "ELECTRON_ENV=development electron .",
+    "build:electron": "npm run compile && electron-builder",
+    "build:windows": "npm run compile && electron-builder --windows",
+    "build:mac": "npm run compile && electron-builder --mac",
+    "build:linux": "npm run compile && electron-builder --linux",
+    "dist": "npm run build:electron"
+  },
+  "build": {
+    "appId": "com.hackcoin.desktop",
+    "productName": "HackCoin",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules",
+      "!src/**/*.ts",
+      "!*.md",
+      "!.git",
+      "!.vscode"
+    ],
+    "extraResources": [
+      {
+        "from": "frontend/build",
+        "to": "frontend/build"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.4"
+  }
+}

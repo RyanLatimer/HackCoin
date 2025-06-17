@@ -6,7 +6,8 @@ import {
   getUnspentTxOuts,
   sendTransaction,
   generateNextBlock,
-  getAccountBalance
+  getAccountBalance,
+  initBlockchain
 } from './src/blockchain';
 import { getPublicFromWallet, initWallet } from './src/wallet';
 import { getTransactionPool } from './src/transactionPool';
@@ -26,8 +27,9 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-// Initialize wallet and P2P
+// Initialize wallet and blockchain
 initWallet();
+initBlockchain();
 
 // Start P2P server for global connectivity
 initP2PServer(P2P_PORT);

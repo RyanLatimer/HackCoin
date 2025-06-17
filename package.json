@@ -1,22 +1,27 @@
 {
   "name": "HackCoin",
   "version": "1.0.0",
-  "description": "",
-  "scripts": {
+  "description": "",  "scripts": {
     "prestart": "npm run compile",
     "start": "node src/main.js",
     "compile": "tsc",
     "dev": "ts-node api-server.ts",
     "frontend": "cd frontend && npm start",
     "build": "npm run compile && cd frontend && npm run build",
+    "build:prod": "npm run compile && cd frontend && npm run build",
     "global-node": "ts-node global-node.ts",
     "global-node:prod": "npm run compile && node global-node.js",
+    "api-server": "npm run compile && node api-server.js",
     "deploy:local": "NETWORK_TYPE=LOCAL npm run global-node",
     "deploy:testnet": "NETWORK_TYPE=TESTNET npm run global-node",
     "deploy:mainnet": "NETWORK_TYPE=MAINNET npm run global-node",
     "docker:build": "docker build -t hackcoin .",
     "docker:run": "docker run -p 3001:3001 -p 6001:6001 hackcoin",
-    "docker:compose": "docker-compose up -d"
+    "docker:compose": "docker-compose up -d",
+    "electron": "electron .",
+    "build:windows": "npm run build:prod && electron-builder --windows",
+    "build:mac": "npm run build:prod && electron-builder --mac",
+    "build:linux": "npm run build:prod && electron-builder --linux"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
@@ -35,14 +40,15 @@
   },
   "engines": {
     "node": ">=8.5.0"
-  },
-  "devDependencies": {
+  },  "devDependencies": {
     "@types/body-parser": "^1.16.4",
     "@types/crypto-js": "^3.1.33",
     "@types/express": "^4.0.36",
     "@types/lodash": "^4.14.85",
     "@types/node": "^8.0.9",
     "@types/ws": "^3.0.1",
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.4",
     "tslint": "^5.5.0"
   }
 }

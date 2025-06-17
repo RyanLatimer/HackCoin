@@ -1,5 +1,7 @@
 import * as CryptoJS from 'crypto-js';
 import * as _ from 'lodash';
+import {existsSync, readFileSync, writeFileSync, mkdirSync} from 'fs';
+import {dirname} from 'path';
 import {broadcastLatest, broadCastTransactionPool} from './p2p';
 import {
     getCoinbaseTransaction, isValidAddress, processTransactions, Transaction, UnspentTxOut
@@ -7,6 +9,48 @@ import {
 import {addToTransactionPool, getTransactionPool, updateTransactionPool} from './transactionPool';
 import {hexToBinary} from './util';
 import {createTransaction, findUnspentTxOuts, getBalance, getPrivateFromWallet, getPublicFromWallet} from './wallet';
+
+// Persistence configuration
+const BLOCKCHAIN_DATA_DIR = process.env.BLOCKCHAIN_DATA_DIR || 'node/data';
+const BLOCKCHAIN_FILE = `${BLOCKCHAIN_DATA_DIR}/blockchain.json`;
+const UNSPENT_TXOUTS_FILE = `${BLOCKCHAIN_DATA_DIR}/unspent_txouts.json`;
+
+// Ensure data directory exists
+const ensureDataDir = () => {
+    if (!existsSync(BLOCKCHAIN_DATA_DIR)) {
+        mkdirSync(BLOCKCHAIN_DATA_DIR, { recursive: true } as any);
+    }
+};
+
+// Save blockchain to file
+const saveBlockchain = () => {
+    try {
+        ensureDataDir();
+        writeFileSync(BLOCKCHAIN_FILE, JSON.stringify(blockchain, null, 2));
+        writeFileSync(UNSPENT_TXOUTS_FILE, JSON.stringify(unspentTxOuts, null, 2));
+        console.log('Blockchain data saved to disk');
+    } catch (error) {
+        console.error('Error saving blockchain:', error);
+    }
+};
+
+// Load blockchain from file
+const loadBlockchain = () => {
+    try {
+        if (existsSync(BLOCKCHAIN_FILE) && existsSync(UNSPENT_TXOUTS_FILE)) {
+            const blockchainData = JSON.parse(readFileSync(BLOCKCHAIN_FILE, 'utf8'));
+            const unspentTxOutsData = JSON.parse(readFileSync(UNSPENT_TXOUTS_FILE, 'utf8'));
+            
+            blockchain = blockchainData;
+            unspentTxOuts = unspentTxOutsData;
+            console.log(`Blockchain loaded from disk: ${blockchain.length} blocks`);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error loading blockchain:', error);
+    }
+    return false;
+};
 
 class Block {
 
@@ -47,6 +91,16 @@ let blockchain: Block[] = [genesisBlock];
 
 // the unspent txOut of genesis block is set to unspentTxOuts on startup
 let unspentTxOuts: UnspentTxOut[] = processTransactions(blockchain[0].data, [], 0);
+
+// Initialize blockchain (load from disk if available)
+const initBlockchain = () => {
+    if (!loadBlockchain()) {
+        console.log('Starting with genesis block');
+        blockchain = [genesisBlock];
+        unspentTxOuts = processTransactions(blockchain[0].data, [], 0);
+        saveBlockchain(); // Save initial state
+    }
+};
 
 const getBlockchain = (): Block[] => blockchain;
 
@@ -266,6 +320,7 @@ const addBlockToChain = (newBlock: Block): boolean => {
             blockchain.push(newBlock);
             setUnspentTxOuts(retVal);
             updateTransactionPool(unspentTxOuts);
+            saveBlockchain(); // Save to disk after adding block
             return true;
         }
     }
@@ -281,6 +336,7 @@ const replaceChain = (newBlocks: Block[]) => {
         blockchain = newBlocks;
         setUnspentTxOuts(aUnspentTxOuts);
         updateTransactionPool(unspentTxOuts);
+        saveBlockchain(); // Save to disk after replacing chain
         broadcastLatest();
     } else {
         console.log('Received blockchain invalid');
@@ -295,5 +351,6 @@ export {
     Block, getBlockchain, getUnspentTxOuts, getLatestBlock, sendTransaction,
     generateRawNextBlock, generateNextBlock, generatenextBlockWithTransaction,
     handleReceivedTransaction, getMyUnspentTransactionOutputs,
-    getAccountBalance, isValidBlockStructure, replaceChain, addBlockToChain
+    getAccountBalance, isValidBlockStructure, replaceChain, addBlockToChain,
+    saveBlockchain, loadBlockchain, initBlockchain
 };
