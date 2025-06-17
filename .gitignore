@@ -6,3 +6,16 @@ npm-debug.log
 src/*.js
 src/*.map
 .venv
+node_modules/
+dist/
+build/
+*.log
+.env
+.DS_Store
+Thumbs.db
+
+# HackCoin specific
+node/wallet/private_key
+node/data/
+*.dat
+*.blockchain
