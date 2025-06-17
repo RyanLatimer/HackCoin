@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
+export { SocketContext };
+
 export const useSocket = () => {
   const context = useContext(SocketContext);
   if (!context) {

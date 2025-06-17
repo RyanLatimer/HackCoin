@@ -7,7 +7,8 @@ import {
   ArrowRightLeft, 
   Database, 
   Coins,
-  Zap
+  Zap,
+  Network
 } from 'lucide-react';
 
 const Header = () => {
@@ -18,6 +19,7 @@ const Header = () => {
     { path: '/mining', label: 'Mining', icon: Hammer },
     { path: '/transactions', label: 'Transactions', icon: ArrowRightLeft },
     { path: '/blockchain', label: 'Blockchain', icon: Database },
+    { path: '/network', label: 'Network', icon: Network },
   ];
 
   return (

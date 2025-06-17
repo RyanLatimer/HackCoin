@@ -1,40 +1,47 @@
-# HackCoin - Advanced Blockchain Cryptocurrency Platform
+# HackCoin - Bitcoin-Style P2P Blockchain Cryptocurrency
 
-🚀 **The Future of Decentralized Currency** 🚀
+🚀 **True Decentralized Peer-to-Peer Network** 🚀
 
 <a href="https://www.buymeacoffee.com/cosme12" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combines the security of traditional blockchain technology with cutting-edge user experience design. Built with Node.js (Express) backend and React frontend, HackCoin offers a complete ecosystem for mining, wallet management, and transaction processing.
+HackCoin is a modern, fully-decentralized blockchain cryptocurrency that works exactly like the Bitcoin network. No central servers, no bootstrap dependencies - just pure peer-to-peer networking with gossip protocol for automatic peer discovery. Built with Node.js (Express) backend and React frontend, HackCoin offers a complete ecosystem for true P2P networking, mining, and wallet management.
 
 ## ✨ Key Features
 
+### � **Distributed Network**
+- **Peer-to-Peer Networking**: Automatic peer discovery and connection management
+- **Blockchain Synchronization**: Real-time blockchain sync across all network nodes
+- **Network Health Monitoring**: Live network status and peer monitoring
+- **Fork Resolution**: Automatic consensus mechanism for resolving blockchain forks
+- **Bootstrap Node Support**: Easy network joining via bootstrap nodes
+
 ### 🎯 **Advanced Mining System**
-- **Variable Hash Difficulty**: Customize mining difficulty from 1,000 to 100,000+
-- **Real-time Hash Rate Monitoring**: Live performance metrics and statistics
-- **Smart Intensity Control**: Low, Medium, High mining modes
-- **Mining Rewards**: Earn 1 HCK per successfully mined block
-- **WebSocket Updates**: Real-time mining progress and block discoveries
+- **Distributed Consensus**: Proof-of-Work mining across the entire network
+- **Dynamic Difficulty Adjustment**: Automatic difficulty adjustment based on network performance
+- **Network Hash Rate Monitoring**: Real-time network hash rate calculation
+- **Mining Pool Support**: Connect to mining pools or mine solo
+- **Smart Intensity Control**: Configurable mining intensity and gas limits
 
 ### 💎 **Professional Wallet Management**
 - **Secure Key Generation**: ECDSA-based cryptographic security
-- **Wallet Import/Export**: Backup and restore wallet functionality
-- **Real-time Balance Updates**: Live balance tracking with mining rewards
-- **Transaction History**: Complete transaction record with filtering
-- **Copy-to-Clipboard**: Easy address and key management
+- **Multi-Address Support**: Manage multiple wallet addresses
+- **Real-time Balance Tracking**: Live balance updates across the network
+- **Transaction History**: Complete transaction record with network confirmations
+- **Smart Contract Interaction**: Direct interaction with deployed smart contracts
+
+### 📜 **Smart Contract Engine**
+- **JavaScript-based Contracts**: Deploy and execute smart contracts in JavaScript
+- **Secure Sandbox Execution**: Safe contract execution environment
+- **Gas Metering**: Configurable gas limits and pricing
+- **Contract Storage**: Persistent state storage for smart contracts
+- **Example Contracts**: Pre-built token, voting, auction, and multi-sig contracts
 
 ### 🌐 **Modern Web Interface**
-- **Responsive Design**: Beautiful, mobile-friendly interface with Tailwind CSS
-- **Real-time Updates**: Live blockchain and mining status via WebSocket
-- **Dark Theme**: Professional glassmorphism design
-- **Interactive Dashboard**: Visual representation of network statistics
-- **Search & Filter**: Advanced blockchain explorer with search capabilities
-
-### 🔗 **Blockchain Explorer**
-- **Block Details**: Complete block information with transaction history
-- **Network Statistics**: Total blocks, transactions, and volume metrics
-- **Transaction Tracking**: Search and filter transactions by address
-- **Hash Verification**: Copy and verify block hashes
-- **Performance Metrics**: Average block time and network health
+- **Network Monitor**: Real-time network status and peer management
+- **Smart Contract IDE**: Deploy and interact with smart contracts
+- **Blockchain Explorer**: Advanced blockchain exploration with search
+- **Real-time Updates**: Live updates via WebSocket connections
+- **Responsive Design**: Mobile-friendly interface with dark theme
 
 ## 🚀 Quick Start
 
@@ -42,13 +49,349 @@ HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combi
 - Node.js 16+ and npm
 - Git (optional, for cloning)
 
-### Easy Installation (Windows)
+### Single Node Setup
 
-1. **Download or clone the repository**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/yourusername/HackCoin.git
    cd HackCoin
    ```
+
+2. **Install dependencies**
+   ```bash
+   npm run install-all
+   ```
+
+3. **Start the node**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the interface**
+   - Open http://localhost:3001 in your browser
+   - The mining interface will be available immediately
+
+### Distributed Network Setup
+
+#### Method 1: Using Startup Scripts
+
+**Windows:**
+```cmd
+# Start first node (bootstrap node)
+start-distributed.bat --port 3001
+
+# Start second node connecting to first
+start-distributed.bat --port 3002 --bootstrap http://localhost:3001
+
+# Start mining node
+start-distributed.bat --port 3003 --bootstrap http://localhost:3001 --miner 0x1234567890abcdef
+```
+
+**Linux/Mac:**
+```bash
+# Start first node (bootstrap node)
+./start-distributed.sh --port 3001
+
+# Start second node connecting to first
+./start-distributed.sh --port 3002 --bootstrap http://localhost:3001
+
+# Start mining node
+./start-distributed.sh --port 3003 --bootstrap http://localhost:3001 --miner 0x1234567890abcdef
+```
+
+#### Method 2: Manual Environment Variables
+
+```bash
+# Terminal 1 - Bootstrap Node
+PORT=3001 HOST=0.0.0.0 npm run dev
+
+# Terminal 2 - Peer Node
+PORT=3002 HOST=0.0.0.0 BOOTSTRAP_NODES=http://localhost:3001 npm run dev
+
+# Terminal 3 - Mining Node
+PORT=3003 HOST=0.0.0.0 BOOTSTRAP_NODES=http://localhost:3001 MINING_ADDRESS=0x1234567890abcdef npm run dev
+```
+
+### Network Access Setup
+
+To make your HackCoin node accessible across your local network:
+
+1. **Find your IP address:**
+   ```bash
+   # Windows
+   ipconfig
+   
+   # Linux/Mac
+   ifconfig
+   ```
+
+2. **Start with network access:**
+   ```bash
+   HOST=0.0.0.0 PORT=3001 npm run dev
+   ```
+
+3. **Connect from other machines:**
+   ```bash
+   BOOTSTRAP_NODES=http://YOUR_IP_ADDRESS:3001 npm run dev
+   ```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `HOST` | Server host address | `localhost` |
+| `PORT` | Server port number | `3001` |
+| `BOOTSTRAP_NODES` | Comma-separated bootstrap node URLs | None |
+| `MINING_ADDRESS` | Address for mining rewards | None |
+
+### Network Configuration
+
+Edit `network-config.md` to configure:
+- Bootstrap node addresses
+- Network parameters
+- Mining settings
+- Smart contract settings
+
+## 📚 Smart Contracts
+
+### Deploying Contracts
+
+1. **Access the Smart Contracts interface**
+   - Navigate to the "Contracts" tab in the web interface
+
+2. **Choose an example contract or write your own**
+   - Token Contract: ERC20-like token functionality
+   - Voting Contract: Decentralized voting system
+   - Auction Contract: Simple auction mechanism
+   - Multi-Sig Wallet: Multi-signature wallet
+
+3. **Deploy the contract**
+   ```javascript
+   // Example: Deploy a token contract
+   {
+     "deployerAddress": "0x1234567890abcdef",
+     "contractCode": "...", // Contract JavaScript code
+     "initData": {
+       "totalSupply": 1000000,
+       "name": "MyToken"
+     }
+   }
+   ```
+
+### Interacting with Contracts
+
+```javascript
+// Execute a contract function (state-changing)
+{
+  "callerAddress": "0x1234567890abcdef",
+  "contractAddress": "0xabcdef1234567890",
+  "functionName": "transfer",
+  "parameters": {
+    "to": "0xfedcba0987654321",
+    "amount": 100
+  },
+  "value": 0,
+  "gasLimit": 50000
+}
+
+// Call a contract function (read-only)
+{
+  "contractAddress": "0xabcdef1234567890",
+  "functionName": "balanceOf",
+  "parameters": {
+    "address": "0x1234567890abcdef"
+  }
+}
+```
+
+## 🌐 Network Architecture
+
+### Peer-to-Peer Network
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│    Node A   │◄──►│    Node B   │◄──►│    Node C   │
+│  (Mining)   │    │ (Bootstrap) │    │   (Peer)    │
+└─────────────┘    └─────────────┘    └─────────────┘
+       ▲                  ▲                  ▲
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────────────────────────────────────────────┐
+│           Distributed Blockchain                    │
+│     ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐       │
+│     │Block│─│Block│─│Block│─│Block│─│Block│  ...  │
+│     │  0  │ │  1  │ │  2  │ │  3  │ │  4  │       │
+│     └─────┘ └─────┘ └─────┘ └─────┘ └─────┘       │
+└─────────────────────────────────────────────────────┘
+```
+
+### Consensus Mechanism
+
+1. **Proof of Work**: Miners compete to solve cryptographic puzzles
+2. **Difficulty Adjustment**: Network adjusts difficulty every 10 blocks
+3. **Fork Resolution**: Longest valid chain wins
+4. **Transaction Pool**: Shared transaction pool across all nodes
+
+### Smart Contract Execution
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Deploy TX     │    │   Execute TX    │    │   Contract      │
+│                 │    │                 │    │   Storage       │
+│ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
+│ │ Contract    │ │───►│ │ Function    │ │───►│ │ State       │ │
+│ │ Code        │ │    │ │ Call        │ │    │ │ Updates     │ │
+│ └─────────────┘ │    │ └─────────────┘ │    │ └─────────────┘ │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## 🛠️ Development
+
+### Project Structure
+
+```
+HackCoin/
+├── contracts/                 # Smart contract engine
+│   ├── SmartContractEngine.js
+│   └── ExampleContracts.js
+├── network/                   # Distributed networking
+│   ├── PeerManager.js
+│   ├── BlockchainSync.js
+│   └── ConsensusManager.js
+├── client/                    # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── NetworkMonitor.js
+│   │   │   ├── SmartContracts.js
+│   │   │   └── ...
+│   │   └── ...
+│   └── ...
+├── server.js                  # Main server
+├── package.json
+└── README.md
+```
+
+### API Endpoints
+
+#### Blockchain API
+- `GET /api/blocks` - Get blockchain
+- `GET /api/blockchain/full` - Get full blockchain
+- `POST /api/blockchain/sync` - Sync blockchain
+
+#### Network API
+- `GET /api/network/status` - Get network status
+- `POST /api/network/connect` - Connect to peer
+- `GET /api/network/peers` - Get connected peers
+
+#### Mining API
+- `GET /api/mining/status` - Get mining status
+- `POST /api/mining/start` - Start mining
+- `POST /api/mining/stop` - Stop mining
+
+#### Smart Contract API
+- `POST /api/contracts/deploy` - Deploy contract
+- `POST /api/contracts/execute` - Execute contract
+- `POST /api/contracts/call` - Call contract (read-only)
+- `GET /api/contracts` - Get all contracts
+
+### Building and Running
+
+```bash
+# Install dependencies
+npm run install-all
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## 🔒 Security Features
+
+- **Cryptographic Security**: ECDSA signatures for all transactions
+- **Secure Smart Contracts**: Sandboxed execution environment
+- **Network Security**: Peer authentication and validation
+- **Input Validation**: Comprehensive input validation on all endpoints
+- **Gas Metering**: Prevents infinite loops and resource exhaustion
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our contributing guidelines:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📈 Roadmap
+
+### Phase 1: Core Network ✅
+- ✅ Peer discovery and connection
+- ✅ Blockchain synchronization
+- ✅ Distributed consensus
+- ✅ Network monitoring
+
+### Phase 2: Smart Contracts ✅
+- ✅ Smart contract engine
+- ✅ Example contracts
+- ✅ Contract deployment UI
+- ✅ Gas metering system
+
+### Phase 3: Advanced Features (Planned)
+- [ ] Advanced wallet features (HD wallets, multi-sig)
+- [ ] Lightning Network integration
+- [ ] Advanced smart contract features
+- [ ] Mobile app development
+- [ ] Cross-chain compatibility
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Peer Connection Failed**
+- Check firewall settings
+- Verify the bootstrap node is running
+- Ensure correct IP addresses and ports
+
+**Mining Not Working**
+- Verify mining address is set
+- Check that peers are connected
+- Ensure sufficient balance for gas fees
+
+**Smart Contract Deployment Failed**
+- Check contract code syntax
+- Verify deployer has sufficient balance
+- Ensure gas limit is adequate
+
+### Debug Mode
+
+Enable debug logging:
+```bash
+DEBUG=hackcoin:* npm run dev
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with Node.js, Express, and React
+- Inspired by Bitcoin and Ethereum
+- Community contributions and feedback
+
+---
+
+**Made with ❤️ by the HackCoin Team**
+
+For support, please visit our [GitHub Issues](https://github.com/yourusername/HackCoin/issues) page.
 
 2. **Run the automatic setup**
    ```bash
