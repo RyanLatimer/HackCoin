@@ -1,5 +1,5 @@
-import { spawn, ChildProcess } from 'child_process';
-import * as path from 'path';
+const { spawn } = require('child_process');
+const path = require('path');
 
 // Test network configuration
 const TEST_NODES = [
@@ -7,10 +7,10 @@ const TEST_NODES = [
     { name: 'Node2', httpPort: 3002, p2pPort: 6002, peers: ['ws://localhost:6001'] }
 ];
 
-const processes: ChildProcess[] = [];
+const processes = [];
 
 // Function to start a node
-function startNode(nodeConfig: any): Promise<ChildProcess> {
+function startNode(nodeConfig) {
     return new Promise((resolve, reject) => {
         console.log(`\n🚀 Starting ${nodeConfig.name}...`);
         
@@ -23,10 +23,11 @@ function startNode(nodeConfig: any): Promise<ChildProcess> {
             SEED_NODES: nodeConfig.peers.join(',')
         };
 
-        const child = spawn('npx', ['ts-node', 'global-node.ts'], {
+        const child = spawn('node', ['global-node.js'], {
             cwd: path.join(__dirname),
             env: env,
-            stdio: ['pipe', 'pipe', 'pipe']
+            stdio: ['pipe', 'pipe', 'pipe'],
+            shell: true
         });
 
         let resolved = false;
@@ -37,7 +38,7 @@ function startNode(nodeConfig: any): Promise<ChildProcess> {
             
             if (output.includes('Ready to accept connections') && !resolved) {
                 resolved = true;
-                resolve(child as any);
+                resolve(child);
             }
         });
 
@@ -57,7 +58,7 @@ function startNode(nodeConfig: any): Promise<ChildProcess> {
             }
         });
 
-        processes.push(child as any);
+        processes.push(child);
         
         // Timeout after 30 seconds
         setTimeout(() => {
