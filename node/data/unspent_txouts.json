@@ -340,5 +340,17 @@
     "txOutIndex": 0,
     "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
     "amount": 50
+  },
+  {
+    "txOutId": "9c5d97bd5c49cb8210d0d2af7b8dff8d4b4a9d92974985ada49e0e57a215bd80",
+    "txOutIndex": 0,
+    "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+    "amount": 50
+  },
+  {
+    "txOutId": "9192024dbc0789a7facfde30108baba00358eaea709314e7c9310ea7b3e9b9e8",
+    "txOutIndex": 0,
+    "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+    "amount": 50
   }
 ]

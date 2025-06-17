@@ -1480,5 +1480,57 @@
     "hash": "013b46a3520f5680882081b1c38f6fabc01ccf5599eedefd9f4f478c5691d3e6",
     "difficulty": 5,
     "nonce": 17
+  },
+  {
+    "index": 57,
+    "previousHash": "013b46a3520f5680882081b1c38f6fabc01ccf5599eedefd9f4f478c5691d3e6",
+    "timestamp": 1750186367,
+    "data": [
+      {
+        "txIns": [
+          {
+            "signature": "",
+            "txOutId": "",
+            "txOutIndex": 57
+          }
+        ],
+        "txOuts": [
+          {
+            "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+            "amount": 50
+          }
+        ],
+        "id": "9c5d97bd5c49cb8210d0d2af7b8dff8d4b4a9d92974985ada49e0e57a215bd80"
+      }
+    ],
+    "hash": "013e43246b3e6eeaf3a1fd339ea3a728c8f51ed20590c92bff880f6889e7e3a1",
+    "difficulty": 5,
+    "nonce": 101
+  },
+  {
+    "index": 58,
+    "previousHash": "013e43246b3e6eeaf3a1fd339ea3a728c8f51ed20590c92bff880f6889e7e3a1",
+    "timestamp": 1750186368,
+    "data": [
+      {
+        "txIns": [
+          {
+            "signature": "",
+            "txOutId": "",
+            "txOutIndex": 58
+          }
+        ],
+        "txOuts": [
+          {
+            "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+            "amount": 50
+          }
+        ],
+        "id": "9192024dbc0789a7facfde30108baba00358eaea709314e7c9310ea7b3e9b9e8"
+      }
+    ],
+    "hash": "001d56d21b97d38ae5e0e46103adcfeb6064b5c624a31d23c724f3303a7f790f",
+    "difficulty": 5,
+    "nonce": 98
   }
 ]
