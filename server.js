@@ -212,6 +212,10 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`HackCoin Server running on port ${PORT}`);
+const HOST = process.env.HOST || 'localhost';
+
+server.listen(PORT, HOST, () => {
+  console.log(`🚀 HackCoin Server running on http://${HOST}:${PORT}`);
+  console.log(`📡 WebSocket server ready for real-time updates`);
+  console.log(`⛏️  Mining API available at http://${HOST}:${PORT}/api/mining/`);
 });

@@ -51,35 +51,36 @@ echo ✅ All dependencies installed successfully!
 echo.
 echo 🎯 Starting HackCoin services...
 echo.
-echo    1. Blockchain Miner (Python backend)
-echo    2. Web GUI (React frontend)
+echo    1. HackCoin Backend API Server (Node.js)
+echo    2. HackCoin Web GUI (React frontend)
 echo.
 echo 🌐 Access URLs:
-echo    • GUI Interface: http://localhost:3001
-echo    • API Endpoint:  http://localhost:5000
+echo    • GUI Interface: http://localhost:3000
+echo    • Backend API:   http://localhost:3001
 echo.
 echo 💡 Usage Tips:
 echo    • Create a wallet first in the GUI
 echo    • Configure mining difficulty in Mining section
-echo    • Use Ctrl+C to stop each service
+echo    • Mining rewards are earned automatically
+echo    • Use Ctrl+C to stop services
 echo.
 
-REM Start the miner in a new window
-echo 🔧 Starting HackCoin Miner...
-start "HackCoin Miner" cmd /k "python hackcoin_miner.py"
+REM Start the backend server in a new window
+echo 🔧 Starting HackCoin Backend Server...
+start "HackCoin Backend" cmd /k "cd /d "%~dp0" && node server.js"
 
-REM Wait a moment for the miner to initialize
+REM Wait a moment for the backend to initialize
 timeout /t 3 /nobreak >nul
 
-REM Start the web application
+REM Start the React frontend
 echo 🌐 Starting HackCoin Web GUI...
-start "HackCoin Web GUI" cmd /k "npm run dev"
+start "HackCoin Frontend" cmd /k "cd /d "%~dp0\client" && npm start"
 
 echo.
 echo 🎉 HackCoin is starting up!
 echo.
-echo The miner and web interface are launching in separate windows.
-echo Wait a few moments, then visit: http://localhost:3001
+echo The backend and frontend are launching in separate windows.
+echo Wait a few moments, then visit: http://localhost:3000
 echo.
 echo Press any key to exit this launcher...
 pause >nul

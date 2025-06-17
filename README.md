@@ -4,29 +4,29 @@
 
 <a href="https://www.buymeacoffee.com/cosme12" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combines the security of traditional blockchain technology with cutting-edge user experience design. Built with Python (Flask) backend and React frontend, HackCoin offers a complete ecosystem for mining, wallet management, and transaction processing.
+HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combines the security of traditional blockchain technology with cutting-edge user experience design. Built with Node.js (Express) backend and React frontend, HackCoin offers a complete ecosystem for mining, wallet management, and transaction processing.
 
 ## ✨ Key Features
 
 ### 🎯 **Advanced Mining System**
 - **Variable Hash Difficulty**: Customize mining difficulty from 1,000 to 100,000+
-- **Multi-threaded Processing**: Utilize up to 8 CPU threads for optimal performance
 - **Real-time Hash Rate Monitoring**: Live performance metrics and statistics
 - **Smart Intensity Control**: Low, Medium, High mining modes
 - **Mining Rewards**: Earn 1 HCK per successfully mined block
+- **WebSocket Updates**: Real-time mining progress and block discoveries
 
 ### 💎 **Professional Wallet Management**
 - **Secure Key Generation**: ECDSA-based cryptographic security
 - **Wallet Import/Export**: Backup and restore wallet functionality
-- **Real-time Balance Updates**: Live balance tracking across the network
+- **Real-time Balance Updates**: Live balance tracking with mining rewards
 - **Transaction History**: Complete transaction record with filtering
 - **Copy-to-Clipboard**: Easy address and key management
 
 ### 🌐 **Modern Web Interface**
-- **Responsive Design**: Beautiful, mobile-friendly interface
+- **Responsive Design**: Beautiful, mobile-friendly interface with Tailwind CSS
 - **Real-time Updates**: Live blockchain and mining status via WebSocket
 - **Dark Theme**: Professional glassmorphism design
-- **Interactive Charts**: Visual representation of network statistics
+- **Interactive Dashboard**: Visual representation of network statistics
 - **Search & Filter**: Advanced blockchain explorer with search capabilities
 
 ### 🔗 **Blockchain Explorer**
@@ -40,14 +40,75 @@ HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combi
 
 ### Prerequisites
 - Node.js 16+ and npm
-- Python 3.8+
-- Git
+- Git (optional, for cloning)
 
-### Installation
+### Easy Installation (Windows)
 
-1. **Clone the repository**
+1. **Download or clone the repository**
    ```bash
    git clone https://github.com/yourusername/HackCoin.git
+   cd HackCoin
+   ```
+
+2. **Run the automatic setup**
+   ```bash
+   # Option 1: Simple startup (local access only)
+   start-hackcoin.bat
+   
+   # Option 2: Advanced startup with network options
+   start-hackcoin-advanced.bat
+   ```
+
+The setup script will:
+- Check for Node.js installation
+- Install all dependencies automatically  
+- Start both backend and frontend servers
+- Provide options for local or network access
+
+### Easy Installation (Linux/Mac)
+
+1. **Download or clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/HackCoin.git
+   cd HackCoin
+   ```
+
+2. **Run the startup script**
+   ```bash
+   chmod +x start-hackcoin.sh
+   ./start-hackcoin.sh
+   ```
+
+### Manual Installation
+
+If you prefer manual setup:
+
+1. **Install backend dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Install frontend dependencies**
+   ```bash
+   cd client
+   npm install
+   cd ..
+   ```
+
+3. **Start the backend server**
+   ```bash
+   node server.js
+   ```
+
+4. **Start the frontend (in a new terminal)**
+   ```bash
+   cd client
+   npm start
+   ```
+
+5. **Access HackCoin**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:3001
    cd HackCoin
    ```
 
@@ -110,50 +171,95 @@ HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combi
 - Search by block hash, address, or transaction data
 - Monitor network statistics and performance
 
+## 🌐 Network Configuration & Multi-Device Access
+
+### Current Architecture
+HackCoin is designed as a **single-node demonstration system** for educational purposes. It operates locally and does not automatically connect to other HackCoin instances.
+
+### Access HackCoin from Other Devices on Your Network
+
+1. **Start with network access:**
+   ```bash
+   # Set environment variables for network access
+   set HOST=0.0.0.0
+   set PORT=3001
+   node server.js
+   ```
+
+2. **Find your computer's IP address:**
+   ```bash
+   # Windows Command Prompt
+   ipconfig
+   # Look for IPv4 Address (e.g., 192.168.1.100)
+   ```
+
+3. **Access from other devices:**
+   - **HackCoin GUI**: `http://YOUR_IP:3000`
+   - **API Endpoints**: `http://YOUR_IP:3001/api/`
+
+### Important Networking Limitations
+
+❌ **HackCoin does NOT currently support:**
+- Peer-to-peer blockchain synchronization
+- Automatic network discovery
+- Multi-node consensus mechanisms
+- Cross-network transaction validation
+
+✅ **HackCoin DOES support:**
+- Local network access to web interface
+- API access from network devices
+- Individual blockchain instances
+- Local mining and wallet operations
+
+> 📋 **See `network-config.md` for detailed networking information and security considerations.**
+
 ## 🔧 Advanced Configuration
 
 ### Mining Difficulty Presets
-- **Easy (1,000)**: Perfect for testing and low-power devices
+- **Easy (1,000)**: Perfect for testing and demonstrations
 - **Medium (7,919)**: Balanced performance (default)
-- **Hard (50,000)**: Increased security and mining time
-- **Extreme (100,000+)**: Maximum security for production networks
+- **Hard (50,000)**: Increased difficulty for longer mining times
+- **Extreme (100,000+)**: Maximum difficulty
 - **Custom**: Set any difficulty value manually
 
-### Network Configuration
-Edit `simpleCoin/miner_config.py` to configure:
-- Miner reward address
-- Node URL and port
-- Peer node connections
-- Network parameters
+### Environment Variables
+```bash
+# Backend configuration
+HOST=0.0.0.0          # Network interface (localhost or 0.0.0.0)
+PORT=3001             # Backend server port
+
+# Frontend configuration  
+REACT_APP_API_URL=http://localhost:3001  # Backend API URL
+```
 
 ### API Endpoints
-- `GET /blocks` - Retrieve blockchain data
-- `POST /txion` - Submit transactions
-- `POST /mining/start` - Start mining with parameters
-- `POST /mining/stop` - Stop mining
-- `GET /mining/stats` - Get mining statistics
+- `GET /api/blocks` - Retrieve blockchain data
+- `GET /api/mining/status` - Get current mining status
+- `POST /api/mining/start` - Start mining with parameters
+- `POST /api/mining/stop` - Stop mining process
+- `POST /api/transaction` - Submit new transactions
 
 ## 📊 Technical Architecture
 
-### Backend (Python/Flask)
-- **Blockchain Core**: Enhanced block structure with difficulty support
-- **Mining Engine**: Multi-threaded proof-of-work algorithm
-- **Transaction Pool**: Pending transaction management
-- **Consensus Algorithm**: Longest chain rule implementation
-- **API Layer**: RESTful endpoints for frontend communication
+### Backend (Node.js/Express)
+- **Blockchain Core**: In-memory blockchain with JSON data structure
+- **Mining Engine**: Simulated proof-of-work with configurable difficulty
+- **WebSocket Server**: Real-time updates via Socket.IO
+- **RESTful API**: Express-based endpoints for all operations
+- **Transaction Management**: JSON-based transaction processing
 
-### Frontend (React/TypeScript)
+### Frontend (React/JavaScript)
 - **Component Architecture**: Modular, reusable UI components
 - **State Management**: Context-based wallet and socket management
-- **Real-time Updates**: WebSocket integration for live data
-- **Responsive Design**: Tailwind CSS with glassmorphism effects
-- **User Experience**: Toast notifications and loading states
+- **Real-time Updates**: WebSocket integration for live mining data
+- **Responsive Design**: Tailwind CSS with modern glassmorphism effects
+- **User Experience**: Toast notifications and intuitive navigation
 
 ### Security Features
-- **ECDSA Signatures**: Cryptographic transaction signing
-- **Hash Verification**: SHA-256 block hashing
+- **ECDSA Key Generation**: Cryptographic wallet creation
+- **Transaction Signing**: Mock ECDSA signature verification
 - **Input Validation**: Comprehensive data sanitization
-- **Secure Storage**: Local wallet encryption options
+- **Local Storage**: Browser-based wallet persistence
 
 ## 🛡️ Security Considerations
 
