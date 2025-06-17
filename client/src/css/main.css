@@ -1,0 +1,196 @@
+body {
+    color: #FFFFFF;
+    background-color: #27323a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    color: aliceblue;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+/* Navigation */
+nav li {
+    padding-top: 3%;
+    padding-right: 3%;
+    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
+    display: inline-block;
+    list-style: none;
+}
+
+
+/* Landing */
+.tribar-main-text {
+    font-family: 'Audiowide', cursive;
+    font-size: 6em;
+    text-shadow: 4px 4px 2px rgba(150,255,185,0.3);
+}
+
+.section-main-landing {
+    padding-top: 1%;
+    padding-bottom: 6%;
+    height: 42vh;
+}
+
+.landing-image-wrapper img {
+    height: 330px;
+    width: auto;
+    display:block;
+    margin:auto;
+    opacity: 0.33%;
+}
+
+.section-features img{
+    height: 64px;
+    width: auto;
+    display:block;
+    margin:auto;
+}
+
+.section-features {
+    text-align: center;
+}
+
+/* Key Features */
+.section-key-features {
+    height: 33%;
+    padding: 3%;
+    background-color: #435055;
+}
+
+.section-key-features h3 {
+    text-align: center;
+}
+
+.section-features img {
+    padding-bottom: 3%;
+}
+
+/* Get Started*/
+
+.section-get-started {
+    height: 33%;
+    padding: 3%;
+}
+
+.section-get-started img {
+    padding-top: 6%;
+    display:block;
+    margin:auto;
+}
+
+
+/* Get Started  & Contact Me */
+
+.get-started img {
+    height: 256px;
+    opacity: .15%;
+    width: auto;
+}
+
+.section-contact-me img {
+    padding-top: 6%;
+    display:block;
+    margin:auto;
+}
+
+.section-contact-me {
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-color: #435055;
+}
+
+
+
+/* Footer  */
+footer {
+    height: 150px;
+    margin-top: 50px;
+}
+
+
+.section-footer {
+    border-top-color: #a3f7bf;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.section-footer li {
+    list-style: none;
+}
+
+/*.footer-sub {*/
+/*    padding-left: 3%;*/
+/*}*/
+
+
+
+/* Transactions */
+
+.individual-block {
+    color: #a3f7bf;
+    padding: 3px;
+    margin-bottom: 1%;
+}
+.transaction-wrapper {
+    background-color: #435055;
+}
+
+.align-text-middle {
+    vertical-align: middle;
+    padding-top: 2%;
+    padding-left: 3px;
+}
+
+.transaction-block {
+    border: 1px solid #a3f7bf;
+}
+
+.transaction-block:hover {
+    background-color: #435055;
+    border-radius: 3px;
+}
+
+
+/* Utilities */
+
+.plus-accent {
+    color: #a3f7bf;
+}
+
+.skewed-bg {
+    padding: 90px 0;
+    -webkit-transform: skew(0deg, -3deg);
+    transform: skew(0deg, -3deg);
+}
+.skewed-bg .content {
+    -webkit-transform: skew(0deg, 3deg);
+    transform: skew(0deg, 3deg);
+    text-align: center;
+}
+.skewed-bg .content  {
+    font-weight: normal;
+}
+.skewed-bg .content .text {
+    width: 60%;
+    margin: 25px auto;
+    color: #ccfff2;
+}
+
+.bold-text {
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+
+.align-text-middle {
+    vertical-align: middle;
+}
