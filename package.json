@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",  "scripts": {
     "prestart": "npm run compile",
-    "start": "node src/main.js",
+    "start": "node api-server.js",
     "compile": "tsc",
     "dev": "ts-node api-server.ts",
     "frontend": "cd frontend && npm start",

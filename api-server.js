@@ -32,6 +32,7 @@ const bodyParser = __importStar(require("body-parser"));
 const blockchain_1 = require("./src/blockchain");
 const wallet_1 = require("./src/wallet");
 const p2p_1 = require("./src/p2p");
+const advanced_miner_1 = require("./src/advanced-miner");
 const app = (0, express_1.default)();
 // Get configuration from environment or use defaults
 const HTTP_PORT = parseInt(process.env.HTTP_PORT || '3001');
@@ -54,10 +55,6 @@ if (process.env.SEED_NODES) {
     console.log(`Connecting to seed nodes: ${seedNodes.join(', ')}`);
     (0, p2p_1.connectToPeers)(seedNodes);
 }
-// Mining state
-let isMining = false;
-let miningInterval = null;
-let hashRate = 0;
 // ============ API ROUTES ============
 // Get blockchain
 app.get('/api/blocks', (req, res) => {
@@ -124,46 +121,72 @@ app.get('/api/transactions', (req, res) => {
     });
     res.json(transactions);
 });
-// Mining endpoints
+// Mining endpoints with advanced controls
 app.post('/api/mine/start', (req, res) => {
-    if (isMining) {
+    if (advanced_miner_1.advancedMiner.isMining()) {
         return res.json({ success: false, message: 'Already mining' });
     }
-    isMining = true;
-    let hashCount = 0;
-    const startTime = Date.now();
-    miningInterval = setInterval(async () => {
-        try {
-            const block = (0, blockchain_1.generateNextBlock)();
-            if (block) {
-                hashCount++;
-                const elapsed = (Date.now() - startTime) / 1000;
-                hashRate = hashCount / elapsed;
-                console.log(`Block ${block.index} mined!`);
-            }
-        }
-        catch (error) {
-            console.error('Mining error:', error);
-        }
-    }, 1000);
-    res.json({ success: true, message: 'Mining started' });
+    advanced_miner_1.advancedMiner.startMining();
+    res.json({ success: true, message: 'Advanced mining started' });
 });
 app.post('/api/mine/stop', (req, res) => {
-    if (!isMining) {
+    if (!advanced_miner_1.advancedMiner.isMining()) {
         return res.json({ success: false, message: 'Not currently mining' });
     }
-    isMining = false;
-    if (miningInterval) {
-        clearInterval(miningInterval);
-        miningInterval = null;
-    }
-    hashRate = 0;
+    advanced_miner_1.advancedMiner.stopMining();
     res.json({ success: true, message: 'Mining stopped' });
 });
 app.get('/api/mine/status', (req, res) => {
+    const stats = advanced_miner_1.advancedMiner.getStats();
+    const config = advanced_miner_1.advancedMiner.getConfig();
     res.json({
-        status: isMining ? 'mining' : 'idle',
-        hashRate: hashRate
+        status: advanced_miner_1.advancedMiner.isMining() ? 'mining' : 'idle',
+        hashRate: stats.hashRate,
+        intensity: config.intensity,
+        threads: config.threads,
+        blocksFound: stats.blocksFound,
+        runtime: stats.runtime,
+        efficiency: stats.efficiency,
+        cpuUsage: stats.cpuUsage
+    });
+});
+// Mining configuration endpoints
+app.get('/api/mine/config', (req, res) => {
+    const config = advanced_miner_1.advancedMiner.getConfig();
+    const capabilities = advanced_miner_1.advancedMiner.getSystemCapabilities();
+    res.json(Object.assign(Object.assign(Object.assign({}, config), capabilities), { mining: advanced_miner_1.advancedMiner.isMining() }));
+});
+app.post('/api/mine/intensity', (req, res) => {
+    const { intensity } = req.body;
+    if (typeof intensity !== 'number' || intensity < 0 || intensity > 100) {
+        return res.status(400).json({ error: 'Intensity must be a number between 0 and 100' });
+    }
+    advanced_miner_1.advancedMiner.setIntensity(intensity);
+    res.json({
+        success: true,
+        intensity: intensity,
+        message: `Mining intensity set to ${intensity}%`
+    });
+});
+// System information
+app.get('/api/system/info', (req, res) => {
+    const capabilities = advanced_miner_1.advancedMiner.getSystemCapabilities();
+    const stats = advanced_miner_1.advancedMiner.getStats();
+    res.json({
+        cpu: {
+            model: capabilities.cpuModel,
+            cores: capabilities.maxThreads,
+            usage: stats.cpuUsage
+        },
+        mining: {
+            capable: true,
+            recommended: capabilities.recommendedIntensity,
+            current: advanced_miner_1.advancedMiner.getConfig().intensity
+        },
+        performance: {
+            hashRate: stats.hashRate,
+            efficiency: stats.efficiency
+        }
     });
 });
 // Network status

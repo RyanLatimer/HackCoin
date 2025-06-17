@@ -27,7 +27,7 @@ export class AdvancedMiner {
     private workers: Worker[] = [];
     private startTime: number = 0;
     private totalHashes: number = 0;
-    private intervalId: NodeJS.Timeout | null = null;
+    private intervalId: any | null = null;
     
     constructor() {
         const maxThreads = os.cpus().length;
