@@ -5302,5 +5302,31 @@
     "hash": "00000c33bfb754485a75e09b2ee599ed0e217f937e66b415b4925ebbe7acf073",
     "difficulty": 20,
     "nonce": 855562
+  },
+  {
+    "index": 204,
+    "previousHash": "00000c33bfb754485a75e09b2ee599ed0e217f937e66b415b4925ebbe7acf073",
+    "timestamp": 1750186605,
+    "data": [
+      {
+        "txIns": [
+          {
+            "signature": "",
+            "txOutId": "",
+            "txOutIndex": 204
+          }
+        ],
+        "txOuts": [
+          {
+            "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+            "amount": 50
+          }
+        ],
+        "id": "38a4528d42c85b5f70d55c89dec4e9dcbd8ffa13084f88cf3eee92de1e861ed1"
+      }
+    ],
+    "hash": "000007165dee375336fd2d8b943b9ac1283d337697cfe4ba30b88ed60f48b3e3",
+    "difficulty": 20,
+    "nonce": 181524
   }
 ]

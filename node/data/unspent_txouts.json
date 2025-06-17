@@ -1222,5 +1222,11 @@
     "txOutIndex": 0,
     "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
     "amount": 50
+  },
+  {
+    "txOutId": "38a4528d42c85b5f70d55c89dec4e9dcbd8ffa13084f88cf3eee92de1e861ed1",
+    "txOutIndex": 0,
+    "address": "04d3fdc3a38d8e1991b42e02179f8335659f8d3157191c2ebfb4159dc817ef21063beaf7d827f44355dca1eb3f6596c49bc646fc7c853bd0d820fd7cb7d111f484",
+    "amount": 50
   }
 ]
