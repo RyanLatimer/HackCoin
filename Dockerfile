@@ -16,7 +16,7 @@ RUN npm run compile
 
 # Build frontend for production
 WORKDIR /app/frontend
-RUN npm install && npm run build
+RUN npm install --legacy-peer-deps && npm run build
 
 # Go back to app directory
 WORKDIR /app

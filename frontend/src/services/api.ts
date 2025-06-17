@@ -23,20 +23,18 @@ export interface WalletInfo {
   balance: number;
 }
 
-class ApiService {
-  async getBlocks(): Promise<Block[]> {
+class ApiService {  async getBlocks(): Promise<Block[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/blocks`);
+      const response = await fetch(`${API_BASE_URL}/api/blocks`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching blocks:', error);
       return [];
     }
   }
-
   async getBalance(address: string): Promise<number> {
     try {
-      const response = await fetch(`${API_BASE_URL}/balance/${address}`);
+      const response = await fetch(`${API_BASE_URL}/api/balance/${address}`);
       const data = await response.json();
       return data.balance || 0;
     } catch (error) {
@@ -44,10 +42,9 @@ class ApiService {
       return 0;
     }
   }
-
   async sendTransaction(transaction: Transaction): Promise<boolean> {
     try {
-      const response = await fetch(`${API_BASE_URL}/transaction`, {
+      const response = await fetch(`${API_BASE_URL}/api/transaction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,10 +57,9 @@ class ApiService {
       return false;
     }
   }
-
   async startMining(): Promise<boolean> {
     try {
-      const response = await fetch(`${API_BASE_URL}/mine/start`, {
+      const response = await fetch(`${API_BASE_URL}/api/mine/start`, {
         method: 'POST',
       });
       return response.ok;
@@ -75,7 +71,7 @@ class ApiService {
 
   async stopMining(): Promise<boolean> {
     try {
-      const response = await fetch(`${API_BASE_URL}/mine/stop`, {
+      const response = await fetch(`${API_BASE_URL}/api/mine/stop`, {
         method: 'POST',
       });
       return response.ok;
@@ -87,17 +83,16 @@ class ApiService {
 
   async getMiningStatus(): Promise<{ status: string; hashRate?: number }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/mine/status`);
+      const response = await fetch(`${API_BASE_URL}/api/mine/status`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching mining status:', error);
       return { status: 'unknown' };
     }
   }
-
   async getWalletInfo(): Promise<WalletInfo> {
     try {
-      const response = await fetch(`${API_BASE_URL}/wallet`);
+      const response = await fetch(`${API_BASE_URL}/api/wallet`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching wallet info:', error);
@@ -107,7 +102,7 @@ class ApiService {
 
   async getTransactionHistory(): Promise<Transaction[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/transactions`);
+      const response = await fetch(`${API_BASE_URL}/api/transactions`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching transaction history:', error);
