@@ -199,6 +199,46 @@ export const WalletProvider = ({ children }) => {
     localStorage.removeItem('hackcoin_wallet');
   }, []);
 
+  const changeWallet = useCallback(async (newPrivateKey) => {
+    if (!newPrivateKey) {
+      throw new Error('Private key is required');
+    }
+    
+    setLoading(true);
+    try {
+      // Validate private key format
+      if (newPrivateKey.length !== 64) {
+        throw new Error('Invalid private key format (must be 64 characters)');
+      }
+      
+      // Generate public key from private key (mock implementation)
+      const publicKey = btoa(newPrivateKey.substring(0, 32) + 
+        Array.from({ length: 32 }, () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0')).join(''));
+      
+      // Update wallet state
+      setPrivateKey(newPrivateKey);
+      setAddress(publicKey);
+      setBalance(0); // Reset balance, will be fetched
+      
+      // Store in localStorage for persistence
+      localStorage.setItem('hackcoin_wallet', JSON.stringify({
+        privateKey: newPrivateKey,
+        address: publicKey
+      }));
+      
+      // Get balance for new wallet
+      setTimeout(() => {
+        getBalance();
+      }, 100);
+      
+      return { privateKey: newPrivateKey, address: publicKey };
+    } catch (error) {
+      throw new Error('Failed to change wallet: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [getBalance]);
+
   // Load wallet from localStorage on mount
   React.useEffect(() => {
     const savedWallet = localStorage.getItem('hackcoin_wallet');
@@ -225,7 +265,8 @@ export const WalletProvider = ({ children }) => {
       importWallet,
       getBalance,
       sendTransaction,
-      disconnectWallet
+      disconnectWallet,
+      changeWallet
     }}>
       {children}
     </WalletContext.Provider>

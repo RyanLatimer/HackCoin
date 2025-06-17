@@ -1,4 +1,4 @@
-# HackCoin Bitcoin-Style P2P Network Implementation
+  # HackCoin Bitcoin-Style P2P Network Implementation
 
 ## Overview
 

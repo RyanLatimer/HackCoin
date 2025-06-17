@@ -16,22 +16,23 @@ import {
 import { toast } from 'react-toastify';
 import { useWallet } from '../context/WalletContext';
 
-const Wallet = () => {
-  const {
+const Wallet = () => {  const {
     address,
     balance,
     privateKey,
     createWallet,
     importWallet,
+    changeWallet,
     getBalance,
     sendTransaction
   } = useWallet();
-
   const [showPrivateKey, setShowPrivateKey] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [showImportForm, setShowImportForm] = useState(false);
   const [showSendForm, setShowSendForm] = useState(false);
+  const [showChangeWalletForm, setShowChangeWalletForm] = useState(false);
   const [importKey, setImportKey] = useState('');
+  const [changeWalletKey, setChangeWalletKey] = useState('');
   const [sendForm, setSendForm] = useState({
     recipient: '',
     amount: ''
@@ -91,6 +92,22 @@ const Wallet = () => {
       toast.success('💸 Transaction sent successfully!');
     } catch (error) {
       toast.error('Failed to send transaction: ' + error.message);
+    }
+  };
+
+  const handleChangeWallet = async () => {
+    if (!changeWalletKey.trim()) {
+      toast.error('Please enter a private key');
+      return;
+    }
+    
+    try {
+      await changeWallet(changeWalletKey.trim());
+      setShowChangeWalletForm(false);
+      setChangeWalletKey('');
+      toast.success('🔄 Wallet changed successfully!');
+    } catch (error) {
+      toast.error('❌ ' + error.message);
     }
   };
 
@@ -257,13 +274,19 @@ const Wallet = () => {
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
-          </button>
-          <button
+          </button>          <button
             onClick={downloadWallet}
             className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center"
           >
             <Download className="h-4 w-4 mr-2" />
             Backup
+          </button>
+          <button
+            onClick={() => setShowChangeWalletForm(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center"
+          >
+            <Key className="h-4 w-4 mr-2" />
+            Change Wallet
           </button>
         </div>
       </div>
@@ -371,6 +394,84 @@ const Wallet = () => {
                   onClick={() => {
                     setShowSendForm(false);
                     setSendForm({ recipient: '', amount: '' });
+                  }}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                >
+                  Cancel                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Change Wallet Modal */}
+      {showChangeWalletForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="glassmorphism rounded-xl p-6 w-full max-w-md">            <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+              <Key className="h-5 w-5 mr-2 text-purple-400" />
+              Change Wallet
+            </h3>
+            <div className="space-y-4">
+              <div className="flex space-x-3 mb-4">
+                <button
+                  onClick={async () => {
+                    try {
+                      const { privateKey: newPrivateKey } = await createWallet();
+                      setChangeWalletKey(newPrivateKey);
+                      toast.success('🎲 New wallet generated! Review and confirm below.');
+                    } catch (error) {
+                      toast.error('❌ Failed to generate wallet: ' + error.message);
+                    }
+                  }}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Generate New
+                </button>
+                <button
+                  onClick={() => setChangeWalletKey('')}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  New Private Key
+                </label>
+                <textarea
+                  value={changeWalletKey}
+                  onChange={(e) => setChangeWalletKey(e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-sm resize-none"
+                  placeholder="Enter your 64-character private key..."
+                  rows={3}
+                />
+                <p className="text-gray-400 text-xs mt-1">
+                  Must be exactly 64 hexadecimal characters
+                </p>
+              </div>
+              <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-lg p-3">
+                <div className="flex items-center space-x-2 text-yellow-400 text-sm">
+                  <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold">Warning</div>
+                    <div className="text-xs mt-1">
+                      Changing your wallet will switch to a different address. Make sure you have backed up your current wallet if you want to access it later.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={handleChangeWallet}
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                >
+                  Change Wallet
+                </button>
+                <button
+                  onClick={() => {
+                    setShowChangeWalletForm(false);
+                    setChangeWalletKey('');
                   }}
                   className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
                 >

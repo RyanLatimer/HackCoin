@@ -2,14 +2,14 @@
   "name": "hackcoin",
   "version": "1.0.0",
   "description": "HackCoin - A Modern Blockchain Cryptocurrency with GUI",
-  "main": "index.js",
-  "scripts": {
+  "main": "index.js",  "scripts": {
     "start": "node server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server.js",
     "client": "cd client && npm start",
     "install-all": "npm install && cd client && npm install",
-    "build": "cd client && npm run build"
+    "build": "cd client && npm run build",
+    "global": "npm run install-all && npm run dev"
   },
   "keywords": ["blockchain", "cryptocurrency", "hackcoin", "mining", "wallet"],
   "author": "HackCoin Team",

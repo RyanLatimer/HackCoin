@@ -4,6 +4,16 @@
 
 <a href="https://www.buymeacoffee.com/cosme12" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
+## 🌍 **JOIN THE GLOBAL NETWORK WITH ONE COMMAND!**
+
+**Windows**: Double-click `start-global.bat`  
+**Linux/Mac**: Run `./start-global.sh`  
+**Universal**: Run `npm run global`
+
+That's it! Your node automatically connects to the global HackCoin network worldwide. No configuration needed!
+
+---
+
 HackCoin is a modern, fully-decentralized blockchain cryptocurrency that works exactly like the Bitcoin network. No central servers, no bootstrap dependencies - just pure peer-to-peer networking with gossip protocol for automatic peer discovery. Built with Node.js (Express) backend and React frontend, HackCoin offers a complete ecosystem for true P2P networking, mining, and wallet management.
 
 ## ✨ Key Features
@@ -44,6 +54,35 @@ HackCoin is a modern, fully-decentralized blockchain cryptocurrency that works e
 - **Responsive Design**: Mobile-friendly interface with dark theme
 
 ## 🚀 Quick Start
+
+### 🌍 **INSTANT GLOBAL NETWORK CONNECTION**
+
+The fastest way to join the global HackCoin network:
+
+**Windows:**
+```cmd
+start-global.bat
+```
+
+**Linux/Mac:**
+```bash
+./start-global.sh
+```
+
+**Universal (any platform):**
+```bash
+npm run global
+```
+
+Your node will automatically:
+- ✅ Install all dependencies
+- ✅ Connect to the global network
+- ✅ Sync with the blockchain
+- ✅ Open the web interface at http://localhost:3000
+
+### Manual Setup (Advanced Users)
+
+If you prefer manual control:
 
 ### Prerequisites
 - Node.js 16+ and npm

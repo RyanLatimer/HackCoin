@@ -9,6 +9,9 @@ const PeerManager = require('./network/PeerManager');
 const BlockchainSync = require('./network/BlockchainSync');
 const ConsensusManager = require('./network/ConsensusManager');
 
+// Import global network configuration
+const { getSeedNodes, getRandomSeedNodes, getNetworkInfo } = require('./global-network');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -50,7 +53,7 @@ let miningStats = {
 };
 
 // Initialize with genesis block and distributed components
-function initializeBlockchain() {
+async function initializeBlockchain() {
   if (blockchain.length === 0) {
     blockchain.push({
       index: 0,
@@ -71,19 +74,78 @@ function initializeBlockchain() {
   peerManager = new PeerManager(null, port);
   blockchainSync = new BlockchainSync(blockchain, peerManager);
   consensusManager = new ConsensusManager(blockchain, peerManager, blockchainSync);
-
   // Setup event handlers
   setupDistributedEventHandlers();
 
-  // Seed initial peer if provided (for first node on network)
-  const seedPeer = process.env.SEED_PEER;
-  if (seedPeer) {
-    console.log(`🌱 Seeding initial peer: ${seedPeer}`);
-    peerManager.seedPeerAddress(seedPeer);
-  }
+  // Auto-connect to global network
+  await connectToGlobalNetwork();
 
   console.log('🚀 Decentralized P2P blockchain initialized');
   console.log(`📡 Node ID: ${peerManager.nodeId.substring(0, 8)}...`);
+  
+  // Display network info
+  const networkInfo = getNetworkInfo();
+  console.log(`🌐 Network: ${networkInfo.networkName}`);
+  console.log(`🔗 Environment: ${networkInfo.environment}`);
+}
+
+/**
+ * Automatically connect to the global HackCoin network
+ */
+async function connectToGlobalNetwork() {
+  console.log('🌍 Connecting to global HackCoin network...');
+  
+  // Get custom bootstrap nodes from environment variables
+  const customBootstrap = process.env.BOOTSTRAP_NODES || process.env.SEED_PEER;
+  const seedNodes = [];
+  
+  if (customBootstrap) {
+    // Use custom bootstrap nodes if provided
+    const customNodes = customBootstrap.split(',').map(node => node.trim());
+    seedNodes.push(...customNodes);
+    console.log(`🔗 Using custom bootstrap nodes: ${customNodes.join(', ')}`);
+  } else {
+    // Use global seed nodes
+    const globalSeeds = getRandomSeedNodes(3);
+    seedNodes.push(...globalSeeds);
+    console.log(`🌱 Using global seed nodes: ${globalSeeds.join(', ')}`);
+  }
+  
+  // Attempt to connect to seed nodes
+  let connectedToAny = false;
+  for (const seedNode of seedNodes) {
+    try {
+      // Skip if it's our own node
+      const currentPort = process.env.PORT || 3001;
+      if (seedNode.includes(`:${currentPort}`) && 
+          (seedNode.includes('localhost') || seedNode.includes('127.0.0.1'))) {
+        continue;
+      }
+      
+      console.log(`🔌 Attempting to connect to seed node: ${seedNode}`);
+      peerManager.seedPeerAddress(seedNode);
+      connectedToAny = true;
+      
+      // Give some time between connections
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.log(`❌ Failed to connect to seed node ${seedNode}: ${error.message}`);
+    }
+  }
+  
+  if (!connectedToAny) {
+    console.log('⚠️  No seed nodes available. Running as standalone node.');
+    console.log('� Other nodes can connect to this node to join the network.');
+  } else {
+    console.log('✅ Connected to global network! Peer discovery will begin automatically.');
+  }
+
+  // Seed initial peer if provided (legacy support)
+  const legacySeedPeer = process.env.SEED_PEER;
+  if (legacySeedPeer && !customBootstrap) {
+    console.log(`🌱 Seeding legacy peer: ${legacySeedPeer}`);
+    peerManager.seedPeerAddress(legacySeedPeer);
+  }
 }
 
 function setupDistributedEventHandlers() {
@@ -148,7 +210,10 @@ function setupDistributedEventHandlers() {
 }
 
 // Initialize blockchain on startup
-initializeBlockchain();
+initializeBlockchain().catch(error => {
+  console.error('❌ Failed to initialize blockchain:', error);
+  process.exit(1);
+});
 
 // API Routes - Enhanced for Distributed Blockchain
 app.get('/api/blocks', (req, res) => {
@@ -500,21 +565,21 @@ app.get('*', (req, res) => {
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
 
-server.listen(PORT, HOST, () => {
-  console.log(`
+server.listen(PORT, HOST, () => {  console.log(`
   ╔══════════════════════════════════════════════════════════════╗
   ║                                                              ║
-  ║            🚀 HACKCOIN DISTRIBUTED NETWORK 🚀              ║
+  ║            🌍 HACKCOIN GLOBAL NETWORK 🌍                   ║
   ║                                                              ║
-  ║  Server running on: http://${HOST}:${PORT.toString().padEnd(30)}║
-  ║  Node ID: ${peerManager.nodeId.substring(0, 16)}...            ║
+  ║  🖥️  Server: http://${HOST}:${PORT.toString().padEnd(32)}║
+  ║  🌐 Web UI: http://localhost:3000                            ║
+  ║  📡 Node ID: ${peerManager.nodeId.substring(0, 16)}...          ║
+  ║                                                              ║  
+  ║  ✅ Connected to global HackCoin network                     ║
+  ║  ⛏️  Mining API ready                                        ║
+  ║  💰 Wallet features available                                ║
+  ║  🔗 Blockchain sync active                                   ║
   ║                                                              ║
-  ║  📡 WebSocket server ready for real-time updates            ║
-  ║  ⛏️  Distributed mining API available                       ║
-  ║  🌐 P2P networking enabled                                   ║
-  ║  🔗 Blockchain synchronization active                        ║
-  ║                                                              ║
-  ║  To connect peers, set BOOTSTRAP_NODES environment variable ║
+  ║  💡 Access from other devices: http://YOUR_IP:3000          ║
   ║                                                              ║
   ╚══════════════════════════════════════════════════════════════╝
   `);
@@ -537,4 +602,119 @@ server.listen(PORT, HOST, () => {
       process.exit(0);
     });
   });
+});
+
+// Network information endpoint
+app.get('/api/network/info', (req, res) => {
+  try {
+    const networkInfo = getNetworkInfo();
+    const peerInfo = peerManager ? {
+      nodeId: peerManager.nodeId,
+      connectedPeers: peerManager.peers.size,
+      knownAddresses: peerManager.peerAddresses.size,
+      maxPeers: peerManager.maxPeers
+    } : null;
+    
+    res.json({
+      ...networkInfo,
+      node: peerInfo,
+      blockchain: {
+        height: blockchain.length,
+        latestBlock: blockchain[blockchain.length - 1]
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching network info:', error);
+    res.status(500).json({ error: 'Failed to fetch network info' });
+  }
+});
+
+// Global network connection instructions page
+app.get('/join', (req, res) => {
+  const networkInfo = getNetworkInfo();
+  const host = req.get('host');
+  
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join HackCoin Global Network</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .container { max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); }
+        h1 { text-align: center; margin-bottom: 30px; font-size: 2.5em; }
+        .step { background: rgba(255,255,255,0.2); padding: 20px; margin: 15px 0; border-radius: 10px; }
+        .step h3 { margin-top: 0; color: #FFD700; }
+        code { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; display: block; margin: 10px 0; font-family: 'Courier New', monospace; }
+        .highlight { color: #FFD700; font-weight: bold; }
+        .network-info { background: rgba(0,255,0,0.2); padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .center { text-align: center; }
+        a { color: #FFD700; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Join HackCoin Global Network</h1>
+        
+        <div class="network-info center">
+            <h2>This Node</h2>
+            <p><strong>Address:</strong> http://${host}</p>
+            <p><strong>Network:</strong> ${networkInfo.networkName}</p>
+            <p><strong>Status:</strong> <span class="highlight">🟢 Online</span></p>
+        </div>
+        
+        <div class="step">
+            <h3>📥 Step 1: Download HackCoin</h3>
+            <p>Get the HackCoin source code from GitHub:</p>
+            <code>git clone https://github.com/yourusername/HackCoin.git
+cd HackCoin</code>
+        </div>
+        
+        <div class="step">
+            <h3>🚀 Step 2: Join Global Network (One Command!)</h3>
+            <p><strong>Windows:</strong></p>
+            <code>start-global.bat</code>
+            <p><strong>Linux/Mac:</strong></p>
+            <code>./start-global.sh</code>
+            <p><strong>Universal:</strong></p>
+            <code>npm run global</code>
+        </div>
+        
+        <div class="step">
+            <h3>🔗 Step 3: Connect to This Node (Optional)</h3>
+            <p>To specifically connect to this node:</p>
+            <code>SEED_NODES=http://${host} npm run global</code>
+        </div>
+        
+        <div class="step">
+            <h3>🌐 Step 4: Access Your Node</h3>
+            <p>Once started, access your node at:</p>
+            <ul>
+                <li><strong>Web Interface:</strong> http://localhost:3000</li>
+                <li><strong>API Server:</strong> http://localhost:3001</li>
+                <li><strong>Network Info:</strong> <a href="/api/network/info" target="_blank">http://localhost:3001/api/network/info</a></li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <h3>💰 Step 5: Start Using HackCoin</h3>
+            <ol>
+                <li><strong>Create Wallet:</strong> Go to Wallet tab → "Create New Wallet"</li>
+                <li><strong>Start Mining:</strong> Go to Mining tab → Enter wallet address → "Start Mining"</li>
+                <li><strong>Send Transactions:</strong> Use Wallet tab to send coins</li>
+                <li><strong>Monitor Network:</strong> Check Network tab for peers and stats</li>
+            </ol>
+        </div>
+        
+        <div class="center" style="margin-top: 30px;">
+            <p><a href="/">🏠 Back to HackCoin Node</a></p>
+            <p><a href="/api/network/info" target="_blank">📊 View Network Info</a></p>
+            <p><em>Happy Mining! ⛏️💎</em></p>
+        </div>
+    </div>
+</body>
+</html>`;
+  
+  res.send(html);
 });

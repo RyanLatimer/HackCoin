@@ -1,34 +1,40 @@
 # HackCoin Quick Start Guide
 
-## 🚀 Super Easy Setup
+## 🌍 **INSTANT GLOBAL NETWORK - ONE COMMAND!**
 
 ### Windows Users
-1. Double-click `start-hackcoin-advanced.bat`
-2. Choose option 1 (Local) or 2 (Network)
-3. Wait for both windows to open
-4. Go to http://localhost:3000
+**Double-click `start-global.bat`** - That's it! 🎉
 
-### Linux/Mac Users
-1. Run `./start-hackcoin.sh`
-2. Choose option 1 (Local) or 2 (Network)  
-3. Go to http://localhost:3000
+### Linux/Mac Users  
+**Run `./start-global.sh`** - That's it! 🎉
 
-## 🎯 First Steps
+### Universal Command
+**Run `npm run global`** - Works on any platform! 🎉
+
+## ✨ What Happens Automatically
+
+1. **Installs dependencies** (if needed)
+2. **Connects to global network** worldwide
+3. **Syncs blockchain** with other nodes
+4. **Opens web interface** at http://localhost:3000
+5. **Ready to mine and transact!**
+
+## 🎯 Your First Steps
+
 1. **Create Wallet** → Go to Wallet tab → "Create New Wallet"
-2. **Start Mining** → Go to Mining tab → "Start Mining"
+2. **Start Mining** → Go to Mining tab → "Start Mining"  
 3. **Watch Balance** → Mining rewards appear automatically
 4. **Send Coins** → Use Wallet tab to send to other addresses
 
-## 🌐 Network Access
-- **Local Only**: Only your computer can access
-- **Network Access**: Any device on your WiFi can access at `http://YOUR_IP:3000`
+## 🌐 Global Network Access
+
+- **Your Device**: http://localhost:3000
+- **Other Devices**: http://YOUR_IP:3000
 - **Find IP**: Run `ipconfig` (Windows) or `ifconfig` (Linux/Mac)
 
-## ⚠️ Important Notes
-- This is a **demo blockchain** for learning
-- **Does NOT connect** to other HackCoin instances automatically
-- Each instance runs its own separate blockchain
-- Great for education, testing, and development
+## 🚀 Advanced Options (Optional)
+
+If you want more control, you can still use the advanced scripts:
 
 ## 🛠️ Troubleshooting
 - **"Node.js not found"**: Install from https://nodejs.org/
