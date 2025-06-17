@@ -36,7 +36,8 @@ const Mining = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [miningProcess, setMiningProcess] = useState(null);
   const [logs, setLogs] = useState([]);
-  const { address, balance, getBalance } = useWallet();  const { socket } = useSocket();
+  const { address, balance, getBalance } = useWallet();
+  const { socket } = useSocket();
 
   const addLog = useCallback((message, type = 'info') => {
     const newLog = {
@@ -85,10 +86,62 @@ const Mining = () => {
     }
   }, [socket, handleMiningUpdate, handleBlockFound]);
 
+  // Check mining status on component mount
+  const checkMiningStatus = useCallback(async () => {
+    try {
+      const response = await fetch('/api/mining/status');
+      if (response.ok) {
+        const status = await response.json();
+        setIsMining(status.isActive);
+        setMiningStats(prev => ({
+          ...prev,
+          hashRate: status.hashRate,
+          currentDifficulty: status.difficulty,
+          blocksFound: status.blocksFound
+        }));
+        
+        if (status.isActive) {
+          addLog('⚡ Mining session restored - mining is active', 'info');
+        }
+      }
+    } catch (error) {
+      console.error('Error checking mining status:', error);
+    }
+  }, [addLog]);
+
+  useEffect(() => {
+    checkMiningStatus();
+    
+    // Periodically sync mining status every 30 seconds
+    const syncInterval = setInterval(() => {
+      checkMiningStatus();
+    }, 30000);
+    
+    return () => {
+      clearInterval(syncInterval);
+    };
+  }, [checkMiningStatus]);
+
   const startMining = async () => {
     if (!address) {
       toast.error('Please connect your wallet first');
       return;
+    }
+
+    // Check if mining is already active on backend
+    try {
+      const statusResponse = await fetch('/api/mining/status');
+      if (statusResponse.ok) {
+        const status = await statusResponse.json();
+        if (status.isActive) {
+          setIsMining(true);
+          addLog('⚠️ Mining is already active on the server', 'warning');
+          toast.warning('Mining is already running!');
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking mining status before start:', error);
     }
 
     try {
@@ -124,10 +177,16 @@ const Mining = () => {
             }));
           }
         }, 2000);
-        
-        setMiningProcess(interval);
+          setMiningProcess(interval);
       } else {
-        throw new Error('Failed to start mining');
+        const errorData = await response.json().catch(() => ({}));
+        if (errorData.error && errorData.error.includes('already active')) {
+          setIsMining(true);
+          addLog('⚠️ Mining is already active on the server', 'warning');
+          toast.warning('Mining is already running!');
+          return;
+        }
+        throw new Error(errorData.error || 'Failed to start mining');
       }
     } catch (error) {
       setIsMining(false);
