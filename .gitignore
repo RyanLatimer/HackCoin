@@ -1,1 +1,10 @@
 *.pyc
+node_modules
+.DS_Store
+/.vscode
+/build
+/.env
+/dist
+/.cache
+/.idea
+client\build

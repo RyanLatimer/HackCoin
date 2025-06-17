@@ -139,9 +139,10 @@ def sign_ECDSA_msg(private_key):
 
 if __name__ == '__main__':
     print("""       =========================================\n
-        SIMPLE COIN v1.0.0 - BLOCKCHAIN SYSTEM\n
+        HACKCOIN v1.0.0 - BLOCKCHAIN SYSTEM\n
        =========================================\n\n
-        You can find more help at: https://github.com/cosme12/SimpleCoin\n
+        Welcome to HackCoin Wallet - Secure Cryptocurrency Management\n
+        Features: Advanced wallet management, Secure transactions, GUI interface\n
         Make sure you are using the latest version or you may end in
         a parallel chain.\n\n\n""")
     wallet()

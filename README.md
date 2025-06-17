@@ -1,52 +1,200 @@
-# SimpleCoin
+# HackCoin - Advanced Blockchain Cryptocurrency Platform
 
+🚀 **The Future of Decentralized Currency** 🚀
 
 <a href="https://www.buymeacoffee.com/cosme12" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-Just a really simple, insecure and incomplete implementation of a blockchain for a cryptocurrency made in Python. The goal of this project is to make a working blockchain currency, keeping it as simple as possible and to be used as educational material.
+HackCoin is a modern, feature-rich blockchain cryptocurrency platform that combines the security of traditional blockchain technology with cutting-edge user experience design. Built with Python (Flask) backend and React frontend, HackCoin offers a complete ecosystem for mining, wallet management, and transaction processing.
 
->This project is just being made for fun. If you want to make your own cryptocurrency you should probably take a look at the [Bitcoin Repository](https://github.com/bitcoin/bitcoin).
+## ✨ Key Features
 
+### 🎯 **Advanced Mining System**
+- **Variable Hash Difficulty**: Customize mining difficulty from 1,000 to 100,000+
+- **Multi-threaded Processing**: Utilize up to 8 CPU threads for optimal performance
+- **Real-time Hash Rate Monitoring**: Live performance metrics and statistics
+- **Smart Intensity Control**: Low, Medium, High mining modes
+- **Mining Rewards**: Earn 1 HCK per successfully mined block
 
-## What is a blockchain?
+### 💎 **Professional Wallet Management**
+- **Secure Key Generation**: ECDSA-based cryptographic security
+- **Wallet Import/Export**: Backup and restore wallet functionality
+- **Real-time Balance Updates**: Live balance tracking across the network
+- **Transaction History**: Complete transaction record with filtering
+- **Copy-to-Clipboard**: Easy address and key management
 
-Taking a look at the [Bitcoin organization wiki website](https://en.bitcoin.it/wiki/Main_Page) we can find this definition:
+### 🌐 **Modern Web Interface**
+- **Responsive Design**: Beautiful, mobile-friendly interface
+- **Real-time Updates**: Live blockchain and mining status via WebSocket
+- **Dark Theme**: Professional glassmorphism design
+- **Interactive Charts**: Visual representation of network statistics
+- **Search & Filter**: Advanced blockchain explorer with search capabilities
 
->A block chain is a transaction database shared by all nodes participating in a system based on the Bitcoin protocol. A full copy of a currency's block chain contains every transaction ever executed in the currency. With this information, one can find out how much value belonged to each address at any point in history.
+### 🔗 **Blockchain Explorer**
+- **Block Details**: Complete block information with transaction history
+- **Network Statistics**: Total blocks, transactions, and volume metrics
+- **Transaction Tracking**: Search and filter transactions by address
+- **Hash Verification**: Copy and verify block hashes
+- **Performance Metrics**: Average block time and network health
 
-In simpler terms, blockchain can be seen as a distributed ledger recording each transaction in the network. Each transaction is identified by the public key of the block which is a hash function of the private key. The distributed ledger makes data manipulation in the blockchain difficult, nearly impossible. 
+## 🚀 Quick Start
 
-You can find more information in the original [Bitcoin Paper](https://bitcoin.org/bitcoin.pdf).
+### Prerequisites
+- Node.js 16+ and npm
+- Python 3.8+
+- Git
 
-## How to run it
+### Installation
 
-First, install ```requirements.txt```.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/HackCoin.git
+   cd HackCoin
+   ```
 
-```
-pip install -r requirements.txt
-```
+2. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Then you have 2 options:
+3. **Install Node.js dependencies**
+   ```bash
+   npm run install-all
+   ```
 
-- Run ```miner.py``` to become a node and start mining
-- Run ```wallet.py``` to become a user and send transactions (to send transactions you must run a node, in other words, you must run ```miner.py``` too)
+4. **Configure your miner** (Edit `simpleCoin/miner_config.py`)
+   ```python
+   # Set your wallet address for mining rewards
+   MINER_ADDRESS = "your-wallet-address-here"
+   MINER_NODE_URL = "http://localhost:5000"
+   PEER_NODES = []  # Add peer nodes here
+   ```
 
-> Important: DO NOT run it in the python IDLE, run it in your console. The ```miner.py``` uses parallel processing that doesn't work in the python IDLE.
+### Running HackCoin
 
-## How this code work?
+1. **Start the Enhanced Miner** (Terminal 1)
+   ```bash
+   python hackcoin_miner.py
+   ```
 
-There are 2 main scripts:
+2. **Start the GUI Application** (Terminal 2)
+   ```bash
+   npm run dev
+   ```
 
-- ```miner.py```
-- ```wallet.py```
+3. **Access the Interface**
+   - **GUI**: http://localhost:3001
+   - **API**: http://localhost:5000
 
-### Miner.py
+## 💡 How to Use
 
-This file is probably the most important. Running it will create a node (like a server). From here you can connect to the blockchain and process transactions (that other users send) by mining. As a reward for this work, you recieve some coins. The more nodes exist, the more secure the blockchain gets.
+### 1. Create Your Wallet
+- Navigate to the Wallet section
+- Click "Create New Wallet" to generate a secure key pair
+- **IMPORTANT**: Backup your private key securely!
 
-```miner.py``` has 2 processes running in parallel:
+### 2. Start Mining
+- Go to the Mining section
+- Configure your mining settings:
+  - **Difficulty**: Choose from Easy (1,000) to Extreme (100,000+)
+  - **Threads**: Select 1-8 CPU threads
+  - **Intensity**: Low/Medium/High performance modes
+- Click "Start Mining" to begin earning HCK
 
-1. The first process takes care of mining, updating new blockchains and finding the proof of work.
+### 3. Send Transactions
+- Use the Wallet interface to send HCK to other addresses
+- All transactions are secured with ECDSA signatures
+- Monitor transaction status in the Transactions section
+
+### 4. Explore the Blockchain
+- View all blocks and transactions in the Blockchain Explorer
+- Search by block hash, address, or transaction data
+- Monitor network statistics and performance
+
+## 🔧 Advanced Configuration
+
+### Mining Difficulty Presets
+- **Easy (1,000)**: Perfect for testing and low-power devices
+- **Medium (7,919)**: Balanced performance (default)
+- **Hard (50,000)**: Increased security and mining time
+- **Extreme (100,000+)**: Maximum security for production networks
+- **Custom**: Set any difficulty value manually
+
+### Network Configuration
+Edit `simpleCoin/miner_config.py` to configure:
+- Miner reward address
+- Node URL and port
+- Peer node connections
+- Network parameters
+
+### API Endpoints
+- `GET /blocks` - Retrieve blockchain data
+- `POST /txion` - Submit transactions
+- `POST /mining/start` - Start mining with parameters
+- `POST /mining/stop` - Stop mining
+- `GET /mining/stats` - Get mining statistics
+
+## 📊 Technical Architecture
+
+### Backend (Python/Flask)
+- **Blockchain Core**: Enhanced block structure with difficulty support
+- **Mining Engine**: Multi-threaded proof-of-work algorithm
+- **Transaction Pool**: Pending transaction management
+- **Consensus Algorithm**: Longest chain rule implementation
+- **API Layer**: RESTful endpoints for frontend communication
+
+### Frontend (React/TypeScript)
+- **Component Architecture**: Modular, reusable UI components
+- **State Management**: Context-based wallet and socket management
+- **Real-time Updates**: WebSocket integration for live data
+- **Responsive Design**: Tailwind CSS with glassmorphism effects
+- **User Experience**: Toast notifications and loading states
+
+### Security Features
+- **ECDSA Signatures**: Cryptographic transaction signing
+- **Hash Verification**: SHA-256 block hashing
+- **Input Validation**: Comprehensive data sanitization
+- **Secure Storage**: Local wallet encryption options
+
+## 🛡️ Security Considerations
+
+⚠️ **Important Security Notes**:
+1. **Private Key Security**: Never share your private key with anyone
+2. **Wallet Backup**: Always backup your wallet files securely
+3. **Network Security**: Use HTTPS in production environments
+4. **Peer Validation**: Verify peer nodes before adding to network
+5. **Regular Updates**: Keep HackCoin updated to latest version
+
+## 🤝 Contributing
+
+We welcome contributions to HackCoin! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+- Code style and standards
+- Pull request process
+- Issue reporting
+- Feature requests
+- Security vulnerability reporting
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Original SimpleCoin concept for blockchain foundation
+- React and Flask communities for excellent frameworks
+- Cryptocurrency pioneers for inspiration and innovation
+- Open source contributors and testers
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/HackCoin/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/HackCoin/discussions)
+- **Email**: hackcoin@example.com
+
+---
+
+**🚀 Welcome to the Future of Cryptocurrency with HackCoin! 🚀**
+
+*Remember: This is educational software. For production cryptocurrency, please use established, audited blockchain platforms.*
 
 2. The second process runs the flask server where peer nodes and users can connect to ask for the entire blockchain or submit new transactions.
 
