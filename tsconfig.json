@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017",
+    "sourceMap": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/main.ts",
+    "src/blockchain.ts",
+    "src/p2p.ts",
+    "src/util.ts",
+    "src/transaction.ts",
+    "src/wallet.ts",
+    "src/transactionPool.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
