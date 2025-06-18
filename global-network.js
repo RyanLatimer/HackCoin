@@ -8,7 +8,7 @@
 // Global seed nodes - these are reliable nodes that help new nodes discover the network
 // In a real deployment, these would be hosted on reliable servers
 const GLOBAL_SEED_NODES = [
-    // Primary seed nodes (simulated for demo - replace with real servers)
+    // Primary seed nodes (replace with real servers)
     'https://seed1.hackcoin.network:3001',
     'https://seed2.hackcoin.network:3001', 
     'https://seed3.hackcoin.network:3001',
@@ -17,7 +17,11 @@ const GLOBAL_SEED_NODES = [
     'https://backup1.hackcoin.network:3001',
     'https://backup2.hackcoin.network:3001',
     
-    // Community seed nodes (for local testing, use localhost addresses)
+    // Community seed nodes (add your public seed nodes here!)
+    // 'http://YOUR_PUBLIC_IP:3001',
+    // 'http://your-domain.com:3001',
+    
+    // Local development nodes (for testing)
     'http://localhost:3001',
     'http://127.0.0.1:3001',
 ];

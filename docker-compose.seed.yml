@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  hackcoin-seed:
+    build:
+      context: .
+      dockerfile: Dockerfile.seed
+    ports:
+      - "3001:3001"
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3001
+      - NODE_ENV=production
+    restart: unless-stopped
+    volumes:
+      - seed-data:/app/data
+    networks:
+      - hackcoin-network
+
+volumes:
+  seed-data:
+
+networks:
+  hackcoin-network:
+    driver: bridge
